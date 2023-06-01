@@ -26,7 +26,7 @@ namespace ariel {
 
         class AscendingIterator {
         private:
-            MagicalContainer &magc;
+            MagicalContainer *magc;
             int index;
 
         public:
@@ -37,6 +37,20 @@ namespace ariel {
             AscendingIterator(const AscendingIterator &other);
 
             ~AscendingIterator() = default;
+
+            AscendingIterator(AscendingIterator&& other) noexcept
+                    : magc(other.magc), index(other.index) {
+                other.index = 0;
+            }
+
+            AscendingIterator& operator=(AscendingIterator&& other) noexcept {
+                if (this != &other) {
+                    magc = other.magc;
+                    index = other.index;
+                    other.index = 0;
+                }
+                return *this;
+            }
 
             AscendingIterator &operator=(const AscendingIterator &other);
 
@@ -63,7 +77,7 @@ namespace ariel {
 
         class SideCrossIterator {
         private:
-            MagicalContainer &magc;
+            MagicalContainer *magc;
             int frontIndex;
             int backIndex;
         public:
@@ -74,6 +88,23 @@ namespace ariel {
             SideCrossIterator(const SideCrossIterator &other);
 
             ~SideCrossIterator() = default;
+
+            SideCrossIterator(SideCrossIterator&& other) noexcept
+                    : magc(other.magc), frontIndex(other.frontIndex), backIndex(other.backIndex) {
+                other.frontIndex = 0;
+                other.backIndex = 0;
+            }
+
+            SideCrossIterator& operator=(SideCrossIterator&& other) noexcept {
+                if (this != &other) {
+                    magc = other.magc;
+                    frontIndex = other.frontIndex;
+                    backIndex = other.backIndex;
+                    other.frontIndex = 0;
+                    other.backIndex = 0;
+                }
+                return *this;
+            }
 
             SideCrossIterator &operator=(const SideCrossIterator &other);
 
@@ -102,10 +133,10 @@ namespace ariel {
 
         class PrimeIterator {
         private:
-            MagicalContainer &magc;
+            MagicalContainer *magc;
             int currIndex;
 
-            bool isPrime(int number) {
+            static bool isPrime(int number) {
                 return true;
             }
 
@@ -117,6 +148,20 @@ namespace ariel {
             PrimeIterator(const PrimeIterator &other);
 
             ~PrimeIterator() = default;
+
+            PrimeIterator(PrimeIterator&& other) noexcept
+                    : magc(other.magc), currIndex(other.currIndex) {
+                other.currIndex = 0;
+            }
+
+            PrimeIterator& operator=(PrimeIterator&& other) noexcept {
+                if (this != &other) {
+                    magc = other.magc;
+                    currIndex = other.currIndex;
+                    other.currIndex = 0;
+                }
+                return *this;
+            }
 
             PrimeIterator &operator=(const PrimeIterator &other);
 

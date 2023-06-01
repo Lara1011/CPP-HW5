@@ -18,9 +18,9 @@ namespace ariel {
         return elements;
     }
 
-    MagicalContainer::AscendingIterator::AscendingIterator() : index(0), magc(*new MagicalContainer()) {}
+    MagicalContainer::AscendingIterator::AscendingIterator() : index(0), magc(new MagicalContainer()) {}
 
-    MagicalContainer::AscendingIterator::AscendingIterator(MagicalContainer &magc) : magc(magc), index(0) {}
+    MagicalContainer::AscendingIterator::AscendingIterator(MagicalContainer &magc) : magc(&magc), index(0) {}
 
     MagicalContainer::AscendingIterator::AscendingIterator(const AscendingIterator &other) : magc(other.magc) {}
 
@@ -65,12 +65,12 @@ namespace ariel {
     }
 
     MagicalContainer MagicalContainer::AscendingIterator::getContainer() {
-        return magc;
+        return *magc;
     }
 
-    MagicalContainer::PrimeIterator::PrimeIterator() : magc(*new MagicalContainer()), currIndex(0) {}
+    MagicalContainer::PrimeIterator::PrimeIterator() : magc(new MagicalContainer()), currIndex(0) {}
 
-    MagicalContainer::PrimeIterator::PrimeIterator(MagicalContainer &magc) : magc(magc), currIndex(0) {}
+    MagicalContainer::PrimeIterator::PrimeIterator(MagicalContainer &magc) : magc(&magc), currIndex(0) {}
 
     MagicalContainer::PrimeIterator::PrimeIterator(const PrimeIterator &other) : magc(other.magc) {}
 
@@ -115,12 +115,12 @@ namespace ariel {
     }
 
     MagicalContainer MagicalContainer::PrimeIterator::getContainer() {
-        return magc;
+        return *magc;
     }
 
-    MagicalContainer::SideCrossIterator::SideCrossIterator() : magc(*new MagicalContainer()), frontIndex(0), backIndex(0) {}
+    MagicalContainer::SideCrossIterator::SideCrossIterator() : magc(new MagicalContainer()), frontIndex(0), backIndex(0) {}
 
-    MagicalContainer::SideCrossIterator::SideCrossIterator(MagicalContainer &magc) : magc(magc), frontIndex(0), backIndex(magc.size()) {}
+    MagicalContainer::SideCrossIterator::SideCrossIterator(MagicalContainer &magc) : magc(&magc), frontIndex(0), backIndex(magc.size()) {}
 
     MagicalContainer::SideCrossIterator::SideCrossIterator(const SideCrossIterator &other) : magc(other.magc) {}
 
@@ -169,6 +169,6 @@ namespace ariel {
     }
 
     MagicalContainer MagicalContainer::SideCrossIterator::getContainer() {
-        return magc;
+        return *magc;
     }
 }
