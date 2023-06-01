@@ -5,9 +5,6 @@
 #ifndef CPP_HW5_MAGICALCONTAINER_HPP
 #define CPP_HW5_MAGICALCONTAINER_HPP
 
-//#include "PrimeIterator.hpp"
-//#include "SideCrossIterator.hpp"
-//#include "AscendingIterator.hpp"
 #include <vector>
 
 using namespace std;
