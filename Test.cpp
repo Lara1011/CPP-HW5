@@ -3,7 +3,8 @@
 //
 
 #include "doctest.h"
-#include "sources/MagicalContainer.h"
+#include "sources/MagicalContainer.hpp"
+using namespace ariel;
 
 TEST_SUITE("Initialization") {
     TEST_CASE("Magical Container") {
@@ -15,23 +16,23 @@ TEST_SUITE("Initialization") {
     MagicalContainer mc{};
 
     TEST_CASE("Ascending Iterator") {
-        CHECK_NOTHROW(AscendingIterator());
-        CHECK_NOTHROW(AscendingIterator ai{mc});
-        AscendingIterator ai{mc};
+        CHECK_NOTHROW(MagicalContainer::AscendingIterator());
+        CHECK_NOTHROW(MagicalContainer::AscendingIterator ai{mc});
+        MagicalContainer::AscendingIterator ai{mc};
         CHECK(ai.getIndex() == 0);
     }
 
     TEST_CASE("Prime Iterator") {
-        CHECK_NOTHROW(PrimeIterator());
-        CHECK_NOTHROW(PrimeIterator pi{mc});
-        PrimeIterator pi{mc};
+        CHECK_NOTHROW(MagicalContainer::PrimeIterator());
+        CHECK_NOTHROW(MagicalContainer::PrimeIterator pi{mc});
+        MagicalContainer::PrimeIterator pi{mc};
         CHECK(pi.getIndex() == 0);
     }
 
     TEST_CASE("Side Cross Iterator") {
-        CHECK_NOTHROW(SideCrossIterator());
-        CHECK_NOTHROW(SideCrossIterator sci{mc});
-        SideCrossIterator sci{mc};
+        CHECK_NOTHROW(MagicalContainer::SideCrossIterator());
+        CHECK_NOTHROW(MagicalContainer::SideCrossIterator sci{mc});
+        MagicalContainer::SideCrossIterator sci{mc};
         CHECK(sci.getBindex() == 0);
         CHECK(sci.getFindex() == 0);
     }
@@ -43,12 +44,14 @@ TEST_SUITE("Testing functions") {
     TEST_CASE("Magical container functions") {
         CHECK(mc.size() == 0);
         CHECK_NOTHROW(mc.addElement(1));
+        CHECK(mc.size() == 1);
         CHECK_NOTHROW(mc.removeElement(1));
+        CHECK(mc.size() == 0);
     }
 
     TEST_CASE("Ascending iterator functions") {
-        AscendingIterator ai{mc};
-        AscendingIterator ai2{mc};
+        MagicalContainer::AscendingIterator ai{mc};
+        MagicalContainer::AscendingIterator ai2{mc};
         CHECK(ai.getIndex() == 0);
         CHECK_NOTHROW(ai.begin());
         CHECK_NOTHROW(ai.end());
@@ -62,8 +65,8 @@ TEST_SUITE("Testing functions") {
     }
 
     TEST_CASE("Prime iterator functions") {
-        PrimeIterator pi{mc};
-        PrimeIterator pi2{mc};
+        MagicalContainer::PrimeIterator pi{mc};
+        MagicalContainer::PrimeIterator pi2{mc};
         CHECK_NOTHROW(pi.begin());
         CHECK_NOTHROW(pi.end());
         CHECK_FALSE(pi.operator!=(pi2));
@@ -76,17 +79,79 @@ TEST_SUITE("Testing functions") {
     }
 
     TEST_CASE("Side cross iterator functions") {
-        SideCrossIterator sci{mc};
-        SideCrossIterator sci2{mc};
+        MagicalContainer::SideCrossIterator sci{mc};
+        MagicalContainer::SideCrossIterator sci2{mc};
         CHECK_NOTHROW(sci.begin());
         CHECK_NOTHROW(sci.end());
         CHECK_FALSE(sci.operator!=(sci2));
-        CHECK_FALSE(!sci.operator==(sci2));
-        CHECK_FALSE(!sci.operator<(sci2));
-        CHECK_FALSE(!sci.operator>(sci2));
+        CHECK(sci.operator==(sci2));
+        CHECK(sci.operator<(sci2));
+        CHECK(sci.operator>(sci2));
         CHECK(sci.operator*() == 1);
         CHECK_NOTHROW(sci.operator++());
         CHECK_NOTHROW(sci.operator=(sci2));
+    }
+}
+
+TEST_SUITE("Testing operators"){
+    TEST_CASE("Ascending iterator") {
+        MagicalContainer container;
+
+        container.addElement(5);
+        container.addElement(10);
+        container.addElement(15);
+
+        MagicalContainer::AscendingIterator ai1{container};
+        MagicalContainer::AscendingIterator ai2{container};
+        MagicalContainer::AscendingIterator it3{container};
+
+        CHECK(ai1 == ai2);
+        CHECK_FALSE(ai1 != it3);
+        CHECK_FALSE(ai1 < it3);
+        CHECK_FALSE(it3 > ai1);
+        CHECK(*ai1 == 5);
+        ai1 = it3;
+        CHECK(ai1 == it3);
+    }
+
+    TEST_CASE("Side-cross iterator") {
+        MagicalContainer container;
+
+        container.addElement(5);
+        container.addElement(10);
+        container.addElement(15);
+
+        MagicalContainer::SideCrossIterator sci1{container};
+        MagicalContainer::SideCrossIterator sci2{container};
+        MagicalContainer::SideCrossIterator sci3{container};
+
+        CHECK(sci1 == sci2);
+        CHECK_FALSE(sci1 != sci3);
+        CHECK_FALSE(sci1 < sci3);
+        CHECK_FALSE(sci3 > sci1);
+        CHECK(*sci1 == 5);
+        sci1 = sci3;
+        CHECK(sci1 == sci3);
+    }
+
+    TEST_CASE("Prime iterator") {
+        MagicalContainer container;
+
+        container.addElement(5);
+        container.addElement(10);
+        container.addElement(15);
+
+        MagicalContainer::PrimeIterator pi1{container};
+        MagicalContainer::PrimeIterator pi2{container};
+        MagicalContainer::PrimeIterator pi3{container};
+
+        CHECK(pi1 == pi2);
+        CHECK_FALSE(pi1 != pi3);
+        CHECK_FALSE(pi1 < pi3);
+        CHECK_FALSE(pi3 > pi1);
+        CHECK(*pi1 == 5);
+        pi1 = pi3;
+        CHECK(pi1 == pi3);
     }
 }
 
@@ -106,19 +171,19 @@ TEST_SUITE("Test Demo") {
         CHECK(elements.at(3) == 9);
         CHECK(elements.at(4) == 3);
 
-        AscendingIterator ascIter(container);
+        MagicalContainer::AscendingIterator ascIter(container);
         vector<int> expected{2, 3, 9, 17, 25};
         for (auto it = ascIter.begin(); it != ascIter.end(); ++it) {
             CHECK(*it == expected[static_cast<vector<int>::size_type>(it.getIndex())]);
         }
 
-        SideCrossIterator crossIter(container);
+        MagicalContainer::SideCrossIterator crossIter(container);
         vector<int> expected2{2, 25, 3, 17, 9};
         for (auto it = crossIter.begin(); it != crossIter.end(); ++it) {
             CHECK(*it == expected2[static_cast<vector<int>::size_type>(it.getFindex())]);
         }
 
-        PrimeIterator primeIter(container);
+        MagicalContainer::PrimeIterator primeIter(container);
         vector<int> expected3{2, 3, 17};
         for (auto it = primeIter.begin(); it != primeIter.end(); ++it) {
             CHECK(*it == expected3[static_cast<vector<int>::size_type>(it.getIndex())]);
@@ -183,7 +248,7 @@ TEST_CASE("Ascending Iterator") {
     container.addElement(25);
     container.addElement(9);
     container.addElement(3);
-    AscendingIterator ascIter(container);
+    MagicalContainer::AscendingIterator ascIter(container);
 
     SUBCASE("operator++"){
         CHECK(*ascIter == 2);
@@ -198,9 +263,9 @@ TEST_CASE("Ascending Iterator") {
     }
 
     SUBCASE("operator==") {
-        AscendingIterator ai1(container);
-        AscendingIterator ai2(container);
-        AscendingIterator ai3(container);
+        MagicalContainer::AscendingIterator ai1(container);
+        MagicalContainer::AscendingIterator ai2(container);
+        MagicalContainer::AscendingIterator ai3(container);
         ++ai1;
         ++ai2;
         ++ai3;
@@ -210,9 +275,9 @@ TEST_CASE("Ascending Iterator") {
     }
 
     SUBCASE("operator!="){
-        AscendingIterator ai1(container);
-        AscendingIterator ai2(container);
-        AscendingIterator ai3(container);
+        MagicalContainer::AscendingIterator ai1(container);
+        MagicalContainer::AscendingIterator ai2(container);
+        MagicalContainer::AscendingIterator ai3(container);
         CHECK(ai1 != ai1);
         CHECK(ai2 != ai2);
         CHECK(ai3 != ai3);
@@ -239,7 +304,7 @@ TEST_CASE("Side Cross Iterator") {
     container.addElement(25);
     container.addElement(9);
     container.addElement(3);
-    SideCrossIterator crossIter(container);
+    MagicalContainer::SideCrossIterator crossIter(container);
 
     SUBCASE("operator++") {
         CHECK(*crossIter == 2);
@@ -254,9 +319,9 @@ TEST_CASE("Side Cross Iterator") {
     }
 
     SUBCASE("operator==") {
-        SideCrossIterator sci1(container);
-        SideCrossIterator sci2(container);
-        SideCrossIterator sci3(container);
+        MagicalContainer::SideCrossIterator sci1(container);
+        MagicalContainer::SideCrossIterator sci2(container);
+        MagicalContainer::SideCrossIterator sci3(container);
         ++sci1;
         ++sci2;
         ++sci3;
@@ -266,9 +331,9 @@ TEST_CASE("Side Cross Iterator") {
     }
 
     SUBCASE("operator!="){
-        SideCrossIterator sci1(container);
-        SideCrossIterator sci2(container);
-        SideCrossIterator sci3(container);
+        MagicalContainer::SideCrossIterator sci1(container);
+        MagicalContainer::SideCrossIterator sci2(container);
+        MagicalContainer::SideCrossIterator sci3(container);
         CHECK(sci1 != sci1);
         CHECK(sci2 != sci2);
         CHECK(sci3 != sci3);
@@ -306,7 +371,7 @@ TEST_CASE("Prime Iterator") {
     container.addElement(25);
     container.addElement(9);
     container.addElement(3);
-    PrimeIterator primeIter(container);
+    MagicalContainer::PrimeIterator primeIter(container);
 
     SUBCASE("Test operator++") {
         CHECK(*primeIter == 2);
@@ -317,8 +382,8 @@ TEST_CASE("Prime Iterator") {
     }
 
     SUBCASE("Test operator== and operator!=") {
-        PrimeIterator pi1(container);
-        PrimeIterator pi2(container);
+        MagicalContainer::PrimeIterator pi1(container);
+        MagicalContainer::PrimeIterator pi2(container);
         ++pi1;
         ++pi2;
         CHECK(pi1 == pi1);
@@ -326,8 +391,8 @@ TEST_CASE("Prime Iterator") {
     }
 
     SUBCASE("operator!="){
-        PrimeIterator pi1(container);
-        PrimeIterator pi2(container);
+        MagicalContainer::PrimeIterator pi1(container);
+        MagicalContainer::PrimeIterator pi2(container);
         CHECK(pi1 != pi2);
     }
 
