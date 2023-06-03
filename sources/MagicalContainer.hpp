@@ -38,9 +38,19 @@ namespace ariel {
 
             ~AscendingIterator() = default;
 
-            AscendingIterator(AscendingIterator&& other) noexcept = delete;
+            AscendingIterator(AscendingIterator&& other) noexcept
+                    : magc(other.magc), index(other.index) {
+                other.index = 0;
+            }
 
-            AscendingIterator& operator=(AscendingIterator&& other) noexcept = delete;
+            AscendingIterator& operator=(AscendingIterator&& other) noexcept {
+                if (this != &other) {
+                    magc = other.magc;
+                    index = other.index;
+                    other.index = 0;
+                }
+                return *this;
+            }
 
             AscendingIterator &operator=(const AscendingIterator &other);
 
@@ -79,9 +89,22 @@ namespace ariel {
 
             ~SideCrossIterator() = default;
 
-            SideCrossIterator(SideCrossIterator&& other) noexcept = delete;
+            SideCrossIterator(SideCrossIterator&& other) noexcept
+                    : magc(other.magc), frontIndex(other.frontIndex), backIndex(other.backIndex) {
+                other.frontIndex = 0;
+                other.backIndex = 0;
+            }
 
-            SideCrossIterator& operator=(SideCrossIterator&& other) noexcept = delete;
+            SideCrossIterator& operator=(SideCrossIterator&& other) noexcept {
+                if (this != &other) {
+                    magc = other.magc;
+                    frontIndex = other.frontIndex;
+                    backIndex = other.backIndex;
+                    other.frontIndex = 0;
+                    other.backIndex = 0;
+                }
+                return *this;
+            }
 
             SideCrossIterator &operator=(const SideCrossIterator &other);
 
@@ -126,9 +149,19 @@ namespace ariel {
 
             ~PrimeIterator() = default;
 
-            PrimeIterator(PrimeIterator&& other) noexcept = delete;
+            PrimeIterator(PrimeIterator&& other) noexcept
+                    : magc(other.magc), currIndex(other.currIndex) {
+                other.currIndex = 0;
+            }
 
-            PrimeIterator& operator=(PrimeIterator&& other) noexcept = delete;
+            PrimeIterator& operator=(PrimeIterator&& other) noexcept {
+                if (this != &other) {
+                    magc = other.magc;
+                    currIndex = other.currIndex;
+                    other.currIndex = 0;
+                }
+                return *this;
+            }
 
             PrimeIterator &operator=(const PrimeIterator &other);
 
