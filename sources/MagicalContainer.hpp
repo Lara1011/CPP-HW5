@@ -38,19 +38,9 @@ namespace ariel {
 
             ~AscendingIterator() = default;
 
-            AscendingIterator(AscendingIterator&& other) noexcept
-                    : magc(other.magc), index(other.index) {
-                other.index = 0;
-            }
+            AscendingIterator(AscendingIterator&& other) noexcept = delete;
 
-            AscendingIterator& operator=(AscendingIterator&& other) noexcept {
-                if (this != &other) {
-                    magc = other.magc;
-                    index = other.index;
-                    other.index = 0;
-                }
-                return *this;
-            }
+            AscendingIterator& operator=(AscendingIterator&& other) noexcept = delete;
 
             AscendingIterator &operator=(const AscendingIterator &other);
 
