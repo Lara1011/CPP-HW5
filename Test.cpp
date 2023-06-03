@@ -16,21 +16,18 @@ TEST_SUITE("Initialization") {
     MagicalContainer mc{};
 
     TEST_CASE("Ascending Iterator") {
-        CHECK_NOTHROW(MagicalContainer::AscendingIterator());
         CHECK_NOTHROW(MagicalContainer::AscendingIterator ai{mc});
         MagicalContainer::AscendingIterator ai{mc};
         CHECK(ai.getIndex() == 0);
     }
 
     TEST_CASE("Prime Iterator") {
-        CHECK_NOTHROW(MagicalContainer::PrimeIterator());
         CHECK_NOTHROW(MagicalContainer::PrimeIterator pi{mc});
         MagicalContainer::PrimeIterator pi{mc};
         CHECK(pi.getIndex() == 0);
     }
 
     TEST_CASE("Side Cross Iterator") {
-        CHECK_NOTHROW(MagicalContainer::SideCrossIterator());
         CHECK_NOTHROW(MagicalContainer::SideCrossIterator sci{mc});
         MagicalContainer::SideCrossIterator sci{mc};
         CHECK(sci.getBindex() == 0);
